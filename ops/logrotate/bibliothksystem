@@ -1,0 +1,11 @@
+/var/www/html/storage/logs/app.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+    create 0640 www-data www-data
+}
+

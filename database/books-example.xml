@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+  <book>
+    <isbn>9783608939842</isbn>
+    <title>Die Verwandlung</title>
+    <author>Franz Kafka</author>
+  </book>
+  <book>
+    <isbn>9780141182636</isbn>
+    <title>1984</title>
+    <author>George Orwell</author>
+  </book>
+</books>

@@ -1,0 +1,74 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bibliothksystem-app
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: ${APP_NAME:-Bibliothksystem}
+      APP_ENV: ${APP_ENV:-development}
+      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_TIMEZONE: ${APP_TIMEZONE:-Europe/Berlin}
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-bibliothksystem}
+      DB_USERNAME: ${DB_USERNAME:-bibliothek}
+      DB_PASSWORD: ${DB_PASSWORD:-change_me_library}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - app_logs:/var/www/html/storage/logs
+      - app_backups:/var/www/html/storage/backups
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost/index.php?route=health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  db:
+    image: mysql:8.4
+    container_name: bibliothksystem-db
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-bibliothksystem}
+      MYSQL_USER: ${DB_USERNAME:-bibliothek}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-change_me_library}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-change_me_root}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  adminer:
+    image: adminer:4
+    container_name: bibliothksystem-adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  app_logs:
+  app_backups:
+

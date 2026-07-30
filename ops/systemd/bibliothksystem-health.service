@@ -1,0 +1,13 @@
+[Unit]
+Description=Bibliothksystem HTTP and database health check
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=bibliothek
+Group=bibliothek
+WorkingDirectory=/opt/bibliothksystem
+Environment=APP_URL=http://localhost:8080
+ExecStart=/opt/bibliothksystem/ops/healthcheck.sh
+

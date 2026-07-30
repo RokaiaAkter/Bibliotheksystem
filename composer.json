@@ -1,0 +1,20 @@
+{
+  "name": "lipi/bibliothksystem",
+  "description": "Small PHP/MySQL library administration learning project",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*",
+    "ext-simplexml": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "scripts": {
+    "lint": "find app public views -name '*.php' -print0 | xargs -0 -n1 php -l"
+  }
+}
+
