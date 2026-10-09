@@ -1,157 +1,346 @@
-# Bibliothksystem
+# Bibliothksystem – Library Management System
 
-`Bibliothksystem` হলো একটি ছোট **PHP 8 + MySQL 8 + Apache + Docker** learning
-project। এটি Staats- und Universitätsbibliothek Hamburg-এর
-System- und Anwendungsadministration ধরনের কাজ মাথায় রেখে বানানো।
+A web-based **Library Management and Administration System** developed using **PHP 8, MySQL 8, Apache, and Docker**.
 
-## Project-এ কী কী আছে
+This project was created as a practical learning project to strengthen skills in **software development, database management, system administration, application security, and IT operations**.
 
-- Login, logout এবং secure session
-- তিনটি role: `admin`, `librarian`, `support`
-- Role-Based Access Control (RBAC) ও Least Privilege
-- বই তৈরি, খোঁজা ও delete করা
-- বই loan/return এবং database transaction
-- JavaScript `fetch()` দিয়ে Ajax search
-- XML import ও export
-- MySQL database, indexes, foreign keys ও prepared statements
-- Telephone number/extension backend
-- Internal ও external-provider support ticket
-- Application health, file log ও database audit log
-- CSRF, XSS ও SQL Injection-এর basic protection
-- Linux/Docker health check, backup, restore ও update scripts
-- Bangla architecture guide এবং German B1 interview answers
+It was inspired by typical System and Application Administration responsibilities in university libraries, particularly the Staats- und Universitätsbibliothek Hamburg.
 
-## সবচেয়ে সহজভাবে চালু করা
+## 1. Project Overview
 
-### আগে যা লাগবে
+Bibliothksystem provides essential library management functionality, including book management, borrowing and returning books, user authentication, role-based permissions, and administrative support tools.
 
-Windows-এ [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-install এবং চালু থাকতে হবে।
+The project follows a layered architecture to separate request handling, business logic, and database operations.
 
-### PowerShell commands
+**Technology Stack**
+
+- **Backend:** PHP 8
+- **Database:** MySQL 8
+- **Web Server:** Apache
+- **Frontend:** HTML, CSS, JavaScript, AJAX
+- **Infrastructure:** Docker, Docker Compose
+- **Data Exchange:** XML
+- **Database Administration:** Adminer
+- **Architecture:** Controller–Service–Repository Pattern
+
+## 2. Key Features
+
+### Authentication and Authorization
+- Secure login and logout functionality
+- Session management
+- Three user roles: `admin`, `librarian`, and `support`
+- Role-Based Access Control (RBAC)
+- Least Privilege access principles
+
+### Library Management
+- Add, search, and delete books
+- Manage book loans and returns
+- Database transactions for borrowing operations
+- Dynamic book search using JavaScript `fetch()` and AJAX
+- Import and export book data using XML
+
+### Database Management
+- MySQL database integration
+- Relational database design
+- Primary and foreign keys
+- Database indexes
+- Prepared SQL statements
+- Transaction-based database operations
+
+### IT Support and Administration
+- Telephone number and extension management
+- Internal IT support tickets
+- External-provider support tickets
+- Application health monitoring
+- File-based application logging
+- Database audit logging
+
+### Security
+- Role-based permission checks
+- Basic Cross-Site Request Forgery (CSRF) protection
+- Cross-Site Scripting (XSS) protection
+- SQL injection prevention using prepared statements
+- Secure session handling
+
+### DevOps and System Operations
+- Docker-based development environment
+- Linux and Docker health-check scripts
+- Database backup and restore scripts
+- Application update scripts
+- Troubleshooting documentation
+
+## 3. Getting Started
+
+### Prerequisites
+
+Before running this project, make sure the following software is installed:
+
+- Docker Desktop
+- Docker Compose (included with Docker Desktop)
+- PowerShell (Windows)
+- A modern web browser
+
+Download Docker Desktop:
+
+https://www.docker.com/products/docker-desktop/
+
+### Installation
+
+**Step 1: Navigate to the project directory**
 
 ```powershell
 cd "C:\path\to\Bibliothksystem"
+```
+
+**Step 2: Create the environment configuration file**
+
+```powershell
 Copy-Item .env.example .env
+```
+
+Configure the database credentials in the `.env` file as required.
+
+**Step 3: Build and start the Docker containers**
+
+```powershell
 docker compose up -d --build
+```
+
+**Step 4: Verify the running containers**
+
+```powershell
 docker compose ps
 ```
 
-Browser-এ খুলুন:
+### Access the Application
 
-- Application: `http://localhost:8080`
-- Adminer database UI: `http://localhost:8081`
+After successful installation, open the following URLs:
 
-Adminer login:
+| Service | URL |
+|---|---|
+| Library Management Application | http://localhost:8080 |
+| Adminer Database Interface | http://localhost:8081 |
 
-- System: `MySQL`
-- Server: `db`
-- Username: `.env`-এর `DB_USERNAME`
-- Password: `.env`-এর `DB_PASSWORD`
-- Database: `bibliothksystem`
+### Adminer Database Login
 
-## Demo login
+Use the following connection settings:
 
-| Role | E-mail | Password | কী করতে পারবে |
-|---|---|---|---|
-| Admin | `admin@bibliothek.local` | `Admin123!` | সব module |
-| Librarian | `staff@bibliothek.local` | `Staff123!` | বই, loan, ticket |
-| Support | `support@bibliothek.local` | `Support123!` | phone, ticket, system/log |
+| Setting | Value |
+|---|---|
+| System | MySQL |
+| Server | `db` |
+| Username | Value of `DB_USERNAME` in `.env` |
+| Password | Value of `DB_PASSWORD` in `.env` |
+| Database | `bibliothksystem` |
 
-এগুলো শুধু local demo password। Production-এ অবশ্যই বদলাতে হবে।
+## 4. Demo Authentication
 
-## Application বন্ধ/চালু
+The application supports three user roles:
+
+- **Admin:** Administrative access based on assigned permissions
+- **Librarian:** Library management operations based on assigned permissions
+- **Support:** IT support operations based on assigned permissions
+
+Demo account credentials are intended for local testing only.
+
+**Security Note:** All demo passwords and default credentials must be replaced before any production deployment.
+
+## 5. Docker Management
+
+**Stop the application**
 
 ```powershell
 docker compose stop
+```
+
+**Restart the application**
+
+```powershell
 docker compose start
 ```
 
-Logs:
+**View application and database logs**
 
 ```powershell
 docker compose logs --tail=100 app db
+```
+
+**Monitor application logs in real time**
+
+```powershell
 docker compose logs -f app
 ```
 
-Database connection পরীক্ষা:
+**Check MySQL database connectivity**
 
 ```powershell
 docker compose exec db mysqladmin ping -h localhost -ubibliothek -p
 ```
 
-## Request কোন file হয়ে যায়
+The MySQL command prompts for the configured database password.
+
+## 6. Application Architecture
+
+The application follows a layered architecture based on the Controller–Service–Repository pattern.
+
+### Request Processing Flow
 
 ```text
 Browser
-  → public/index.php
-  → Router
-  → Controller
-  → Service
-  → Repository
-  → MySQL
-  → View অথবা JSON
-  → Browser
+   |
+   v
+public/index.php
+   |
+   v
+Router
+   |
+   v
+Controller
+   |
+   v
+Service
+   |
+   v
+Repository
+   |
+   v
+MySQL Database
+   |
+   v
+HTML View / JSON Response
+   |
+   v
+Browser
 ```
 
-উদাহরণ: একটি বই loan করলে
+### Example: Book Checkout Process
+
+When a librarian checks out a book, the request follows this workflow:
 
 ```text
 views/books.php
-  → POST route loans/checkout
-  → LoanController.php
-  → LoanService.php
-  → LoanRepository.php + BookRepository.php
-  → loans এবং books table
+   |
+   v
+POST /loans/checkout
+   |
+   v
+LoanController.php
+   |
+   v
+LoanService.php
+   |
+   v
+LoanRepository.php
+   +
+BookRepository.php
+   |
+   v
+MySQL Database
+   |
+   +-- loans table
+   |
+   +-- books table
 ```
 
-## গুরুত্বপূর্ণ folder
+The service layer coordinates the borrowing process and database transaction to maintain data consistency.
 
-| Folder/File | কাজ |
+## 7. Project Structure
+
+| Directory / File | Description |
 |---|---|
-| `public/` | Browser-এর জন্য একমাত্র public document root |
-| `public/index.php` | সব route-এর entry point |
-| `app/Controllers/` | Request গ্রহণ, permission check, response |
-| `app/Services/` | Business rules ও transaction |
-| `app/Repositories/` | Prepared SQL ও MySQL access |
-| `views/` | HTML pages |
-| `database/init/` | Tables, indexes ও demo data |
-| `storage/logs/` | Application log |
-| `ops/` | Backup, restore, update ও health scripts |
-| `docs/` | শেখা ও interview documentation |
+| `public/` | Public web document root |
+| `public/index.php` | Main application entry point and route handling |
+| `app/Controllers/` | HTTP request processing, authorization, and responses |
+| `app/Services/` | Business logic and transaction management |
+| `app/Repositories/` | Database access and prepared SQL queries |
+| `views/` | HTML templates and user interface |
+| `database/init/` | Database schema, indexes, and demonstration data |
+| `storage/logs/` | Application log files |
+| `ops/` | Backup, restore, update, and health-check scripts |
+| `docs/` | Architecture, troubleshooting, learning, and interview documentation |
 
-## XML পরীক্ষা
+## 8. XML Import and Export
 
-`database/books-example.xml` file-টি **Bücher & Ausleihe → XML importieren**
-থেকে upload করুন। Export button দিয়ে current book list XML হিসেবে download
-করা যায়।
+The application supports XML-based book data exchange.
 
-## Database একদম নতুন করে তৈরি
+### Import Book Data
 
-নিচের command database volume এবং সব local database data delete করে। কেবল
-demo data reset করতে চাইলে ব্যবহার করবেন:
+1. Open the application.
+2. Navigate to **Bücher & Ausleihe**.
+3. Select **XML importieren**.
+4. Upload the sample file:
+
+   `database/books-example.xml`
+
+### Export Book Data
+
+Use the XML export functionality to download the current book catalog as an XML file.
+
+## 9. Database Reset
+
+To completely recreate the local database, execute:
 
 ```powershell
 docker compose down -v
 docker compose up -d --build
 ```
 
-## পড়ার সঠিক order
+**Warning:** The `docker compose down -v` command removes Docker Compose-managed volumes, including the local database volume. All data stored in those volumes will be permanently deleted.
+
+Use this procedure only when resetting the demonstration environment.
+
+## 10. Recommended Learning Path
+
+For developers who want to understand the project architecture and implementation, the following reading order is recommended:
 
 1. `docs/JOB_SKILL_MAPPING.md`
 2. `docs/ARCHITECTURE.md`
 3. `public/index.php`
-4. একটি Controller, যেমন `BookController.php`
-5. `BookService.php`
-6. `BookRepository.php`
+4. `app/Controllers/BookController.php`
+5. `app/Services/BookService.php`
+6. `app/Repositories/BookRepository.php`
 7. `database/init/001_schema.sql`
 8. `docs/TROUBLESHOOTING.md`
 9. `docs/INTERVIEW_GUIDE_DE_B1.md`
 
-## Production-এর আগে যা আরও লাগবে
+The documentation includes architecture explanations, IT administration concepts, troubleshooting guidance, and German-language interview preparation materials.
 
-এটি একটি learning project। Real production-এর জন্য secret manager,
-HTTPS reverse proxy, central identity provider/SSO, automated migrations,
-central monitoring, rate limiting, tested restore procedure, off-site backup
-ও independent security review যোগ করতে হবে।
+## 11. Production Considerations
 
+**This project is designed for learning and demonstration purposes and is not production-ready.**
+
+A production deployment would require additional security, operational, and infrastructure improvements, including:
+
+- HTTPS configuration and a secure reverse proxy
+- Centralized identity management and Single Sign-On (SSO)
+- Secure secrets management
+- Automated database migrations
+- Centralized monitoring and alerting
+- Rate limiting and additional security controls
+- Automated and off-site database backups
+- Tested backup restoration procedures
+- Independent security review
+
+## 12. Project Objectives
+
+The main objectives of this project are to:
+
+- Develop practical backend development skills using PHP and MySQL.
+- Understand relational database design and transaction management.
+- Implement authentication and role-based authorization.
+- Gain experience with Docker-based application deployment.
+- Practice application monitoring, logging, backup, and recovery.
+- Understand the separation of concerns in layered software architecture.
+- Strengthen technical knowledge relevant to software development and system/application administration roles.
+
+## 13. Project Status
+
+**Learning and demonstration project**
+
+Developed to demonstrate practical knowledge of backend engineering, database administration, application security, and IT operations.
+
+---
+
+**Tech Stack:** PHP 8 | MySQL 8 | Apache | JavaScript | AJAX | XML | Docker | RBAC | REST-style routing
+
+**Purpose:** Software Development · Library Management · System Administration · Application Administration
